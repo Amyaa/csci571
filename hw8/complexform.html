@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css"/>
+        <title>test</title>
+     
+
+        <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script type="text/javascript" src="bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- BootstrapValidator JS -->
+    <script type="text/javascript" src="bootstrap/dist/js/bootstrapValidator.min.js"></script>
+  
+  <style type="text/css">
+.col-sm-1 {
+    width: 5%;
+    padding-right: 2px;
+}
+.col-sm-3 {
+    width: 31%;
+}
+  </style> 
+</head>
+<body>
+<form id="toggleForm" method="post" class="form-horizontal">
+    <div class="form-group">
+        <label class="col-sm-1 control-label">street*</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" name="firstName" placeholder="First name" />
+        </div>
+
+
+        <label class="col-sm-1 control-label">city</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" name="company"
+                   required data-bv-notempty-message="The company name is required" />
+        </div>
+
+
+        <label class="col-sm-1 control-label">state</label>
+        <div class="col-sm-2">
+            <select name="state" class="form-control">
+                <option></option>
+                <option value="AL">AL</option>
+                <option value="AK">AK</option>
+            </select>
+        </div>
+
+        <div class="col-sm-3">
+            <button type="submit" class="btn btn-default">Validate</button>
+            <a href="http://www.zillow.com/"><img src="http://www.zillow.com/widgets/GetVersionedResource.htm?path=/static/logos/Zillowlogo_150x40.gif" width="150" height="40" alt="Zillow Real Estate Search" /></a>
+        </div>
+
+
+    </div>
+
+
+
+    <div class="form-group">
+    </div>
+</form>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#toggleForm')
+        .bootstrapValidator({
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                firstName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The first name is required'
+                        }
+                    }
+                },
+                lastName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The last name is required'
+                        }
+                    }
+                },
+                company: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The company name is required'
+                        }
+                    }
+                },
+                // These fields will be validated when being visible
+                job: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The job title is required'
+                        }
+                    }
+                },
+                department: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The department name is required'
+                        }
+                    }
+                },
+                mobilePhone: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The mobile phone number is required'
+                        },
+                        digits: {
+                            message: 'The mobile phone number is not valid'
+                        }
+                    }
+                },
+                // These fields will be validated when being visible
+                homePhone: {
+                    validators: {
+                        digits: {
+                            message: 'The home phone number is not valid'
+                        }
+                    }
+                },
+                officePhone: {
+                    validators: {
+                        digits: {
+                            message: 'The office phone number is not valid'
+                        }
+                    }
+                }
+            }
+        })
+        .on('click', 'button[data-toggle]', function() {
+            var $target = $($(this).attr('data-toggle'));
+            $target.toggle();
+            if (!$target.is(':visible')) {
+                // Enable the submit buttons in case additional fields are not valid
+                $('#togglingForm').data('bootstrapValidator').disableSubmitButtons(false);
+            }
+        });
+});
+</script>
+
+</body>
+</html>

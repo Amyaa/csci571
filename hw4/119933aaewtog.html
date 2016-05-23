@@ -1,0 +1,176 @@
+<html>
+<head>
+<title>Input</title>
+
+<style type="text/css">
+body { 
+	text-align: center;
+}
+#ww {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 100px;
+}
+h1 {
+	font-size: 23px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+}
+input {
+	margin-top: 5px;
+}
+</style>
+
+<SCRIPT LANGUAGE=JavaScript>
+function displayinfo(testff){
+	var URL = testff.aafile.value;
+	if(URL.replace(/^\s*|\s$/g,"") == ""){
+		alert("Empty input");
+	}else{
+
+		function loadFile(url){
+			var xmlhttp = null;
+			if(window.XMLHttpRequest){
+				xmlhttp = new XMLHttpRequest();	//Firefox, IE7+, Chrome, Safari, Firefox, Opera
+			}else{
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.open("GET",url,false);
+			xmlhttp.send();
+
+			if(xmlhttp.readyState == 4){ 
+				if(xmlhttp.status == 200){
+					xmlDoc = xmlhttp.responseXML;
+					return xmlDoc;
+				}else if(xmlhttp.status == 404){
+					alert("File not exists");
+					return null;
+				}else{
+					alert("error");
+					return null;
+				} 
+			}	
+		}
+
+		var point = URL.lastIndexOf(".");
+		var type = URL.substr(point);
+		if(type != ".xml"){
+			alert("Please input file end with .xml");
+		}else{
+
+			xmlDoc = loadFile(URL);
+
+			if(window.ActiveXObject){	//for IE, execute script
+				if(xmlDoc.parseError.errorCode != 0){
+					var err = xmlDoc.parseError;
+					generateError(xmlDoc);
+					hWin = window.open("", "Error", "height=300,width=340");
+					hWin.document.write(html_text);
+				}else {
+					generateHTML(xmlDoc);
+					if(listingList.length == 0){
+						alert("The file contains NO real estate listings");
+					}else{
+						hWin = window.open("", "homework4", "height=2000,width=800,resizable=yes,scrollbars=yes,toolbar=yes");
+						hWin.document.write(html_text);
+					}
+				}
+			}else{	//Firefox - execute script once XML object has loaded
+				if(xmlDoc != null){		
+					if(xmlDoc.documentElement.nodeName == "parsererror"){
+						//alert("XML is not valid!");
+						alert("Error in XML file");
+					}else{
+						xmlDoc.onload = generateHTML(xmlDoc);
+						if(listingList.length == 0){
+							alert("The file contains NO real estate listings");
+						}else{
+							hWin = window.open("", "homework4", "height=2000,width=800,resizable=yes,scrollbars=yes,toolbar=yes");
+							hWin.document.write(html_text);
+						}
+					}
+				}
+				hWin.document.close();
+			}
+		}
+	}
+}    
+
+function generateHTML (xmlDoc) {
+	// body...
+	ELEMENT_NODE = 1;	// MS parser doesn't define Node.ELEMENT_NODE
+	root = xmlDoc.DocumentElement;
+	x=0;y=0;
+
+	listingList = xmlDoc.getElementsByTagName("Listing");
+	
+	html_text = "<html><head><title>Real Estate Listings</title></head><body>";
+	html_text += "<h2>Real Estate Listings</h2>";
+	html_text += "<table border='3'>";
+	/*caption = "Real Estate Listings";
+	html_text += "<caption align='left'><h1>" + caption + "</h1></caption>";*/
+	html_text += "<tbody>";
+	
+	//output headers and values
+	for(i=0; i<listingList.length; i++){
+		html_text += "<tr><th colspan='8'>Listing</th></tr>";
+		
+		for(j=0; j<listingList[i].childNodes.length; j++){
+			if(listingList[i].childNodes[j].nodeType == ELEMENT_NODE){
+				//output headers
+				header = listingList[i].childNodes[j].nodeName;
+				if(header == "ListingDetails")
+					header = "Details";
+				html_text += "<tr><th>" + header + "</th>";
+				for(k=0; k<listingList[i].childNodes[j].childNodes.length; k++){
+					if(listingList[i].childNodes[j].childNodes[k].nodeType == ELEMENT_NODE){
+						header = listingList[i].childNodes[j].childNodes[k].nodeName;
+						
+						if(header == "StreetAddress")
+							header = "Street";
+						if(header == "ListingUrl")
+							header = "Listing URL";
+						if(header == "Image"){
+							html_text += "<th colspan='3'>" + header + "</th>";
+						}else{
+							html_text += "<th width='" + x + "px' height='23px'>" + header + "</th>";
+						}
+					}
+				}	
+				html_text += "</tr>";
+
+				//output values
+				html_text += "<tr><td style='empty-cells:show'></td>";
+				for(k=0; k<listingList[i].childNodes[j].childNodes.length; k++){
+					if(listingList[i].childNodes[j].childNodes[k].nodeType == ELEMENT_NODE){
+						vv = listingList[i].childNodes[j].childNodes[k].firstChild.nodeValue;
+						if(listingList[i].childNodes[j].childNodes[k].nodeName == "ListingUrl"){
+							html_text += "<td><a href='" + vv + "'>Link to Listing</a></td>";
+						}else if(listingList[i].childNodes[j].childNodes[k].nodeName == "Image"){
+							html_text += "<td colspan='3'><img src='" + vv + "' width='200px' height='150px'></td>"
+						}else{
+							html_text += "<td>" + vv + "</td>";
+						}
+					}
+				}			
+				html_text += "</tr>";
+			}
+		}
+	}
+
+	html_text += "</tbody></table>";
+	html_text += "<noscript></bo" + "dy></html>";
+}
+</SCRIPT>
+</head>
+
+<body>
+	<div id="ww">
+		<h1>Enter URL for Real Estate Catalog XML File</h1>
+		<form name="testform" method="POST" id="estate">
+			<input type="text" name="aafile" maxlength="255" size="25" /><br/><br/>
+		    <input type="button" name="submit" value="Submit Query" onClick="displayinfo(this.form)" />
+  		</form>
+    </div>
+<noscript>
+</body>
+</html>

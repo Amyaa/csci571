@@ -1,0 +1,47 @@
+    <html>  
+    <title>php+jquery+ajax+json</title>  
+    <?php  
+    header("Content-Type:text/html;charset=utf-8");  
+    ?>  
+    <head>  
+    <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>  
+    <script type="text/javascript">  
+    $(function() {  
+        $("#subbtn").click(function() {  
+            var params = $("input").serialize();  
+            var url = "http://cs-server.usc.edu:30699/tt.php";  
+
+            $.ajax({  
+                type: "post",  
+                url: url,  
+                dataType: "json",  
+                data: params, 
+                success: function(msg){  
+                    var backdata = "name: " + msg.name +  
+                    "<br /> pwd: " + msg.password;  
+                    $("#backdata").html(backdata);  
+                    $("#backdata").css({color: "green"}); 
+                    alert("success"); 
+                },
+                error: function(){
+                    alert("error");
+                }  
+            }); 
+        });       
+    });  
+      
+    </script>  
+    </head>  
+    <body>  
+    <p><label for="name">name:</label>  
+    <input id="name" name="name" type="text" placeholder="firstname"/>  
+    </p>  
+      
+    <p><label for="password">pwd:</label>  
+    <input id="password" name="password" type="password" placeholder="pwd"/>  
+    </p>  
+      
+    <span id="backdata"></span>  
+    <p><input id="subbtn" type="button" value="submit" /></p>  
+    </body>  
+    </html>  

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css"/>
+  <title>Real Estate Search</title>
+  <style type="text/css">
+  .inputt{
+    margin-left: 15px;
+  }
+    body {
+      background-image: url("V0779-d9.jpg");
+      color: rgb(218,121,46);
+    }
+    form {
+      margin-top: 25px;
+    }
+
+
+    .help-block{
+      height: 20px;
+    }
+    label{
+      height: 45px;
+      vertical-align: center;
+    }
+    btn{
+      height: 45px;
+    }
+    .has-error{
+      height: 60px;
+    }
+  </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+      <div class="inputt">
+          <div class="row">              
+        <h3>Search Your Property Here</h3>
+      </div>
+
+      <div class="row">
+        <form id="registrationForm" method="get" class="form-inline" role="form">
+                  <div class="form-group">
+                      <div class="form-group has-error">
+                        <label>Street Address*: </label>
+                        <small class="help-block" data-bv-result="INVALID"></small>
+                      </div>
+                      <div class="form-group has-error">
+                        <input type="text" name="street" class="form-control">
+                        <small class="help-block" data-bv-validator="notEmpty" data-bv-for="street" data-bv-result="INVALID"></small>
+                      </div>
+
+                
+                 
+                      <div class="form-group has-error">
+                        <label> City: </lable>
+                        <small class="help-block" id="tt" style="" data-bv-validator="notEmpty" data-bv-for="street" data-bv-result="INVALID"></small>
+                      </div>
+                      <div class="form-group has-error">
+                        <input type="text" name="city" class="form-control">
+                        <small class="help-block" id="tt" style="" data-bv-validator="notEmpty" data-bv-for="city" data-bv-result="INVALID"></small>
+                      </div>
+
+
+
+                
+                  
+                      <div class="form-group has-error">
+                        State: </lable>
+                        <small class="help-block" id="tt" style="" data-bv-validator="notEmpty" data-bv-for="street" data-bv-result="INVALID"></small>
+                      </div>
+                      <div class="form-group has-error">
+                        <select name="state" class="form-control">
+                          <option></option>
+                          <option value="AL">AL</option>
+                          <option value="AK">AK</option>
+                        </select>&nbsp;&nbsp;
+                      </div>
+
+                      <div class="form-group has-error">
+                          <!-- Do NOT use name="submit" or id="submit" for the Submit button -->
+                          <button type="submit" class="btn btn-warning">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      </div>
+                  </div>
+              </form>
+          </div>
+      </div>
+      <br>
+
+      <hr>
+
+
+        <div id="backdata">         
+        </div> 
+    </div>
+
+     
+
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- BootstrapValidator JS -->
+    <script type="text/javascript" src="bootstrap/dist/js/bootstrapValidator.min.js"></script>
+
+
+<script>
+$(document).ready(function(){
+  $('#registrationForm')
+      .bootstrapValidator({
+          fields: {
+              street: {
+                  message: 'The street is not valid',
+                  validators: {
+                      notEmpty: {
+                          message: 'This field is required'
+                      }
+                  }
+              },
+              city: {
+                  validators: {
+                      notEmpty: {
+                          message: 'This field is required'
+                      }
+                  }
+              },
+              state: {
+                  validators: {
+                      notEmpty: {
+                          message: 'This field is required'
+                      }
+                  }
+              }
+          }
+    });
+});
+
+</script>
+
+</body>
+</html>
